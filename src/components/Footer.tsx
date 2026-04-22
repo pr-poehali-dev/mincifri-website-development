@@ -9,6 +9,7 @@ const links = [
   { section: 'about', label: 'О министерстве' },
   { section: 'directions', label: 'Направления' },
   { section: 'projects', label: 'Проекты' },
+  { section: 'shop', label: 'Магазин' },
   { section: 'news', label: 'Новости' },
   { section: 'contacts', label: 'Контакты' },
 ];

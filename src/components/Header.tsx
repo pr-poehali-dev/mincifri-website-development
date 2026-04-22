@@ -4,6 +4,8 @@ import Icon from '@/components/ui/icon';
 interface HeaderProps {
   activeSection: string;
   onNavigate: (section: string) => void;
+  cartCount?: number;
+  onCartOpen?: () => void;
 }
 
 const navItems = [
@@ -11,11 +13,12 @@ const navItems = [
   { id: 'about', label: 'О министерстве' },
   { id: 'directions', label: 'Направления' },
   { id: 'projects', label: 'Проекты' },
+  { id: 'shop', label: 'Магазин' },
   { id: 'news', label: 'Новости' },
   { id: 'contacts', label: 'Контакты' },
 ];
 
-export default function Header({ activeSection, onNavigate }: HeaderProps) {
+export default function Header({ activeSection, onNavigate, cartCount = 0, onCartOpen }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -88,6 +91,18 @@ export default function Header({ activeSection, onNavigate }: HeaderProps) {
 
           {/* CTA */}
           <div className="hidden lg:flex items-center gap-3">
+            {/* Cart button */}
+            <button
+              onClick={onCartOpen}
+              className={`relative p-2.5 rounded-xl transition-all ${scrolled ? 'text-brand-navy hover:bg-brand-light' : 'text-white hover:bg-white/15'}`}
+            >
+              <Icon name="ShoppingCart" size={20} />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-brand-cyan text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </button>
             <button
               onClick={() => onNavigate('contacts')}
               className="px-5 py-2 bg-gradient-to-r from-brand-blue to-brand-cyan text-white text-sm font-semibold rounded-xl hover:opacity-90 hover:scale-105 transition-all shadow-md shadow-brand-blue/25"
@@ -96,13 +111,26 @@ export default function Header({ activeSection, onNavigate }: HeaderProps) {
             </button>
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            className={`lg:hidden p-2 rounded-lg ${scrolled ? 'text-brand-navy' : 'text-white'}`}
-            onClick={() => setMobileOpen(!mobileOpen)}
-          >
-            <Icon name={mobileOpen ? 'X' : 'Menu'} size={22} />
-          </button>
+          {/* Mobile: cart + menu */}
+          <div className="lg:hidden flex items-center gap-2">
+            <button
+              onClick={onCartOpen}
+              className={`relative p-2 rounded-lg ${scrolled ? 'text-brand-navy' : 'text-white'}`}
+            >
+              <Icon name="ShoppingCart" size={20} />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-brand-cyan text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+            <button
+              className={`p-2 rounded-lg ${scrolled ? 'text-brand-navy' : 'text-white'}`}
+              onClick={() => setMobileOpen(!mobileOpen)}
+            >
+              <Icon name={mobileOpen ? 'X' : 'Menu'} size={22} />
+            </button>
+          </div>
         </div>
       </div>
 
