@@ -12,12 +12,13 @@ interface CartDrawerProps {
   onRemove: (id: string) => void;
   onQtyChange: (id: string, qty: number) => void;
   onClose: () => void;
+  onOrder?: (name: string, phone: string, email: string) => void;
 }
 
 const formatPrice = (price: number) =>
   new Intl.NumberFormat('ru-RU').format(price) + ' ₽';
 
-export default function CartDrawer({ cart, onRemove, onQtyChange, onClose }: CartDrawerProps) {
+export default function CartDrawer({ cart, onRemove, onQtyChange, onClose, onOrder }: CartDrawerProps) {
   const [ordered, setOrdered] = useState(false);
   const [form, setForm] = useState({ name: '', phone: '', email: '' });
 
@@ -25,6 +26,7 @@ export default function CartDrawer({ cart, onRemove, onQtyChange, onClose }: Car
 
   const handleOrder = (e: React.FormEvent) => {
     e.preventDefault();
+    onOrder?.(form.name, form.phone, form.email);
     setOrdered(true);
   };
 

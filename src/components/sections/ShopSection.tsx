@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { shopItems, categoryLabels, categoryIcons, ShopItem } from '@/data/shopData';
+import { categoryLabels, categoryIcons, ShopItem } from '@/data/shopData';
 import Icon from '@/components/ui/icon';
 
 interface ShopSectionProps {
   onAddToCart: (item: ShopItem) => void;
   cartIds: string[];
+  products?: ShopItem[];
 }
 
 type CategoryFilter = ShopItem['category'] | 'all';
@@ -12,11 +13,12 @@ type CategoryFilter = ShopItem['category'] | 'all';
 const formatPrice = (price: number) =>
   new Intl.NumberFormat('ru-RU').format(price) + ' ₽';
 
-export default function ShopSection({ onAddToCart, cartIds }: ShopSectionProps) {
+export default function ShopSection({ onAddToCart, cartIds, products }: ShopSectionProps) {
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>('all');
   const [search, setSearch] = useState('');
 
-  const filtered = shopItems.filter(item => {
+  const items = products ?? [];
+  const filtered = items.filter(item => {
     const matchCat = activeCategory === 'all' || item.category === activeCategory;
     const matchSearch = item.name.toLowerCase().includes(search.toLowerCase()) ||
       item.desc.toLowerCase().includes(search.toLowerCase());
